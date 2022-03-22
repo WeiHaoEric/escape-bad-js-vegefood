@@ -2,14 +2,26 @@
 var url='https://hexschool.github.io/js-filter-data/data.json';
 var data;
 
+var showData=[];
+var category="";
+
+var filter=document.querySelector('.filter');
+filter.addEventListener('click',filterCategory);
+
+
+function render(newContent){
+  var table=document.querySelector('.table-content');
+  table.innerHTML=newContent;
+}
+
 axios.get(url)
  .then(function(res){
   data=res.data.filter(a=>a.作物名稱);
-  // TODO: 之後拆成 renderData 函式
+  // TODO(Done): 之後拆成 renderData 函式
   var str='';
   data.forEach((b,index)=>{
     // TODO(Done): 改成 ES6 的 Template Literals (字面字串符)
-    var content=
+    content=
     `<tr>
       <td>${b.作物名稱}</td>
       <td>${b.市場名稱}</td>
@@ -22,22 +34,9 @@ axios.get(url)
 
     str+=content;
   })
-  table.innerHTML=str;
+
+  render(str)
 })
-
-
-function render(){
-
-}
-
-
-var table=document.querySelector('.table-content');
-var showData=[];
-
-var category="";
-var filter=document.querySelector('.filter');
-
-filter.addEventListener('click',filterCategory);
 
 function filterCategory(e){
   if(e.target.nodeName=='BUTTON'){
@@ -45,7 +44,7 @@ function filterCategory(e){
     showData=data.filter((i)=>{
       return i.種類代碼==category
     })
-    // TODO: 之後拆成 renderData 函式
+    // TODO(Done): 之後拆成 renderData 函式
     var str='';
     showData.forEach((i,index)=>{
       var content=
@@ -60,7 +59,8 @@ function filterCategory(e){
     </tr>`;
       str+=content;
     })
-    table.innerHTML=str;
+    
+    render(str);
   }else{
     return;
   }
